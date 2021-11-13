@@ -29,6 +29,7 @@
 (def cli-options
   [["-d" "--database food.yaml" "Food database file"]
    ["-l" "--logfile log.yaml" "Daily log file"]
+   [nil "--yaml" "Output as yaml"]
    ["-h" "--help"]])
 
 (defn -main [& args]
@@ -39,4 +40,6 @@
             log-db (process-items (load-db (:logfile options)) d)
             resolved-food (core/resolve-food food-db)
             resolved-days (core/resolve-days log-db resolved-food)]
-        (run! #(core/print-day %) resolved-days)))))
+        (if (:yaml options) 
+          (println (yaml/generate-string resolved-days))
+          (run! #(core/print-day %) resolved-days))))))
