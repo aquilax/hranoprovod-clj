@@ -5,7 +5,7 @@ Clojure sandbox implementation of life tracking tool [hranoprovod-cli]()
 ## Run (using babashka)
 
 ```bash
-$ bb --main hranoprovod.main -l example/log.yaml -d example/food.yaml 
+$ bb --main hranoprovod.cli -l example/log.yaml -d example/food.yaml 
 2021/01/24:
   day/nonworking: 1.00
   coffee/cup: 1.00
@@ -27,7 +27,7 @@ $ bb --main hranoprovod.main -l example/log.yaml -d example/food.yaml
 ## YAML output
 
 ```bash
-$ bb --main hranoprovod.main  -l example/log.yaml -d example/food.yaml --yaml
+$ bb --main hranoprovod.cli  -l example/log.yaml -d example/food.yaml --yaml
 - type: day
   date: 2021/01/24
   items:

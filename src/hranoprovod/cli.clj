@@ -1,9 +1,8 @@
-(ns hranoprovod.main
-  (:require [hranoprovod.core :as core])
-  (:require [hranoprovod.core :as core])
+(ns hranoprovod.cli
   (:use [hranoprovod.utils])
-  (:require [clojure.tools.cli :refer [parse-opts]])
-  (:require [clj-yaml.core :as yaml]))
+  (:require [clj-yaml.core :as yaml]
+            [clojure.tools.cli :refer [parse-opts]]
+            [hranoprovod.core :as core]))
 
 (defn load-db [file-name]
   (let [file-content (slurp file-name)]
@@ -40,6 +39,6 @@
             log-db (process-items (load-db (:logfile options)) d)
             resolved-food (core/resolve-food food-db)
             resolved-days (core/resolve-days log-db resolved-food)]
-        (if (:yaml options) 
+        (if (:yaml options)
           (println (yaml/generate-string resolved-days))
           (run! #(core/print-day %) resolved-days))))))

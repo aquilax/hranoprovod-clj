@@ -27,22 +27,23 @@
   [factor ingredients]
   (map #(i (% :name) (* (% :qty) factor)) ingredients))
 
-(defn resolve-item
+(def resolve-item
   "Resolves single food item"
-  [food all-foods depth]
-  (if (= depth 0)
-    food
-    (f
-     (food :name)
-     (group-ingredients
-      (flatten
-       (map
-        (fn [ingredient]
-          (let [found (first (filter (fn [t] (= (t :name) (ingredient :name))) all-foods))]
-            (if (nil? found)
-              ingredient
-              (multiply (ingredient :qty) ((resolve-item found all-foods (- depth 1)) :ingredients)))))
-        (food :ingredients)))))))
+  (memoize
+   (fn [food all-foods depth]
+     (if (= depth 0)
+       food
+       (f
+        (food :name)
+        (group-ingredients
+         (flatten
+          (map
+           (fn [ingredient]
+             (let [found (first (filter (fn [t] (= (t :name) (ingredient :name))) all-foods))]
+               (if (nil? found)
+                 ingredient
+                 (multiply (ingredient :qty) ((resolve-item found all-foods (- depth 1)) :ingredients)))))
+           (food :ingredients)))))))))
 
 (defn resolve-food
   "Resolves all food items"
